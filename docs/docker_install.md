@@ -15,7 +15,7 @@ Export environment variables as shown in "Sample .bashrc" below.
 10. From hsds directory, build docker image:  `$ docker build -t hdfgroup/hsds .`
 11. Start the service `$./runall.sh <n>` where n is the number of containers desired (defaults to 1)
 12. Run `$ docker ps` and verify that the containers are running: hsds_head, hsds_sn_[1-n], hsds_dn_[1-n]
-13. Create HOST entry for service DNS 127.0.0.1  hsds.hdf.test if needed.
+13. Add the DNS for the service to the /etc/hosts file.  E.g. `127.0.0.1  hsds.hdf.test`
 14. Go to <http://hsds.hdf.test/about> and verify that "cluster_state" is "READY" (might need to give it a minute or two)
 15. Run the integration test: `$ python testall.py --skip_unit`
 16. The test suite will emit some warnings due to test domains not being loaded.  To address see "Post Install configuration" below.

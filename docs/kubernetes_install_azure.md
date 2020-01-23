@@ -7,7 +7,7 @@ Export environment variables as shown in "Sample .bashrc" below.
 2. Create AKS Cluster and attach to ACR `az aks create -n $AKSCLUSTER -g $RESOURCEGROUP --generate-ssh-keys --attach-acr $ACRNAME` In order to leverage RBAC with Kubernetes Azure AAD must be configured prior to cluster creation. See example automation at `https://github.com/Azure-Samples/azure-cli-samples/blob/master/aks/azure-ad-integration/azure-ad-integration.sh`
 3. Create a storage account container for HSDS, using AZ cli tools or Azure Storage console
 4. Get project source code: `$ git clone https://github.com/HDFGroup/hsds`
-5. Apply RBAC after creating service priniciple in AAD `https://docs.microsoft.com/en-us/azure/aks/azure-ad-integration-cli`
+5. Apply RBAC after creating service priniciple in AAD <https://docs.microsoft.com/en-us/azure/aks/azure-ad-integration-cli>
 6. For HSDS to be used only within the cluster apply: `$ kubectl apply -f k8s_service.yml`.  Or for HSDS to be available externally, customize k8s_service_lb.yml with an ssl cert identifier and apply: `$ kubectl apply -f k8s_service_lb.yml`
 7. Go to admin/config directory: `$ cd hsds/admin/config`
 8. Copy the file "passwd.default" to "passwd.txt".  Add any usernames/passwords you wish
