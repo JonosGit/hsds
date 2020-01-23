@@ -15,7 +15,7 @@ Export environment variables as shown in "Sample .bashrc" below.
 10. Tag the docker image using the ACR scheme: `$ docker tag $ACRNAME.azurecr.io/hsds:v1`  where 82126fcb0658 is the docker image id, 12345678, is the AWS account id, us-west-2 is replaced by the region you will be installing to, and v1 is the version (update this everytime you will be deploying a new version of HSDS)
 11. Obtain the credentials to login to the AWS container registry: `$ az acr login --name $ACRNAME`.
 12. Push the image to Azure ACR: `$ docker push $ACRNAME.azurecr.io/hsds:v1`
-13. In k8s_deployment.yml, customize the values for AWS_S3_GATEWAY, AWS_REGION, BUCKET_NAME, LOG_LEVEL, SERVER_NAME, HSDS_ENDPOINT, GREETING, AZURE_CONNECTION_STRING and ABOUT based on the AWS region you will be deploying to and values desired for your installation. When deploying to azure you will also need to update the image: myacr.azurecr.io/hdfgroup/hsds:v1" to reflect the attached acr repository for deployment.
+13. In k8s_deployment.yml, customize the values for AWS_S3_GATEWAY, AWS_REGION, BUCKET_NAME, LOG_LEVEL, SERVER_NAME, HSDS_ENDPOINT, GREETING, AZURE_CONNECTION_STRING and ABOUT based on the AWS region you will be deploying to and values desired for your installation. Next update the image: myacr.azurecr.io/hdfgroup/hsds:v1" to reflect the attached acr repository for deployment.
 14. Apply the deployment: `$ kubectl apply -f k8s_deployment.yml`
 15. Verify that the HSDS pod is running: `$ kubectl get pods`.  A pod with a name starting with hsds should be displayed with status as "Running".
 16. Tail the pod logs (`$ kubectl logs -f hsds-1234 sn`) till you see the line: `All nodes healthy, changing cluster state to READY` (requires log level be set to INFO or lower)
