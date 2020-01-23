@@ -31,7 +31,7 @@ Export environment variables as shown in "Sample .bashrc" below.
 26. Run the integration test: `$ python testall.py --skip_unit`
 27. The test suite will emit some warnings due to test domains not being loaded.  To address see test_data_setup below.
 28. To scale up or down the number of HSDS pods, run: `$ kubectl scale --replicas=n deployment/hsds` where n is the number of pods desired.
-29. If enabling external access to the service, create a DNS record for the HSDS endpoint to the DNS name of the AWS ELB load balancer
+29. If enabling external access to the service, create a DNS record for the HSDS endpoint to the DNS name of the load balancer
 
 
 Test Data Setup
