@@ -16,8 +16,9 @@ Export environment variables as shown in "Sample .bashrc" below.
 11. From hsds directory, build docker image:  `$ docker build -t hdfgroup/hsds .`
 12. Start the service `$./runall.sh <n>` where n is the number of containers desired (defaults to 1)
 13. Run `$ docker ps` and verify that the containers are running: hsds_head, hsds_sn_[1-n], hsds_dn_[1-n]
-14. Go to <http://hsds.hdf.test/about> and verify that "cluster_state" is "READY" (might need to give it a minute or two)
-15. Run the integration test: `$ python testall.py --skip_unit`
+14. Add the DNS for the service to the /etc/hosts file.  E.g. `127.0.0.1  hsds.hdf.test`
+15. Go to <http://hsds.hdf.test/about> and verify that "cluster_state" is "READY" (might need to give it a minute or two)
+16. Run the integration test: `$ python testall.py --skip_unit`
 
 
 Sample .bashrc
@@ -69,17 +70,7 @@ Installing Software Updates
 
 To get the latest codes changes from the HSDS repo do the following:
 
-1. Shutdown the service: `$ ./stopall.sh`
+1. Shutdown the service: `$ stopall.sh`
 2. Get code changes: `$ git pull`
-3. Rebuild the Docker image: `$  ./build.sh`
-4. Start the service: `$ ./runall.sh`
-
-Updating passwords
-------------------
-
-To change passwords or add new user accounts do the following:
-
-1. Shutdown the service: `$ ./stopall.sh`
-2. Add new username/passwords to the hsds/admin/config/passwd.txt file
-3. Rebuild the Docker image: `$  ./build.sh`
+3. Build a new Docker image: `$ docker-compose build
 4. Start the service: `$ ./runall.sh`
