@@ -15,8 +15,8 @@ Import Public Docker Registry resources into ACR
 =================================
 
 1. Login to ACR via az acr
-        az acr login --name $ACRNAME
+            az acr login --name $ACRNAME
 2. Login to ACR via docker **Note the admin password was created when the acr was created and is available in the portal if needed.
-        docker login --username $ACRNAME --password $AZDOCKERADMINPASS $ACRNAME.azurecr.io
+            docker login --username $ACRNAME --password $AZDOCKERADMINPASS $ACRNAME.azurecr.io
 3. Run az acr import
-        az acr import -n $ACRNAME --source docker.io/library/hdfgroup/python:3.7 -t targetrepository:targettag
+            az acr import -n $ACRNAME --source docker.io/library/hdfgroup/python:3.7 -t targetrepository:targettag
