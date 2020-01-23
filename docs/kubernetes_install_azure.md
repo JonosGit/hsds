@@ -4,7 +4,7 @@ Installation with Azure Kubernetes
 Export environment variables as shown in "Sample .bashrc" below.
 
 1. Install AKS cli`az aks install-cli`
-2. Create AKS Cluster and attach to ACR `az aks create -n $AKSCLUSTER -g $RESOURCEGROUP --generate-ssh-keys --attach-acr $ACRNAME`
+2. Create AKS Cluster and attach to ACR `az aks create -n $AKSCLUSTER -g $RESOURCEGROUP --generate-ssh-keys --attach-acr $ACRNAME` In order to leverage RBAC with Kubernetes Azure AAD must be configured prior to cluster creation. See example automation at `https://github.com/Azure-Samples/azure-cli-samples/blob/master/aks/azure-ad-integration/azure-ad-integration.sh`
 3. Create a storage account container for HSDS, using AZ cli tools or Azure Storage console
 4. Get project source code: `$ git clone https://github.com/HDFGroup/hsds`
 5. Apply RBAC after creating service priniciple in AAD `https://docs.microsoft.com/en-us/azure/aks/azure-ad-integration-cli`
