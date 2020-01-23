@@ -3,8 +3,7 @@ Installation of ACR (Azure Container Registry)
 
 
 1. Install Azure CLI https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest
-2. Login to Azure Subscription using AZ-Cli.
-        az login
+2. Login to Azure Subscription using AZ-Cli. `$ az login`
 3. After setting the necessary variables (ResourceGroup, Location and Acrname).
    Run the following commands to create Azure Resource Group and new ACR:
         az group create --name $RESOURCEGROUP --location $LOCATION
