@@ -33,6 +33,23 @@ Export environment variables as shown in "Sample .bashrc" below.
 28. To scale up or down the number of HSDS pods, run: `$ kubectl scale --replicas=n deployment/hsds` where n is the number of pods desired.
 29. If enabling external access to the service, create a DNS record for the HSDS endpoint to the DNS name of the load balancer
 
+Sample .bashrc
+--------------
+
+These environment variables will be passed to the Docker containers on start up.
+
+    export AZURE_CONNECTION_STRING=1234567890      # use the connection string for your Azure account 
+    export BUCKET_NAME=hsds.test                   # set to the name of the container you will be using
+    export HDF5_SAMPLE_BUCKET=""
+    export AWS_ACCESS_KEY_ID=1234567890            # user your AWS account access key if using S3 (Not needed if running on EC2 and AWS_IAM_ROLE is defined)
+    export AWS_SECRET_ACCESS_KEY=ABCDEFGHIJKL      # use your AWS account access secret key if using S3  (Not needed if running on EC2 and AWS_IAM_ROLE is defined)
+    export BUCKET_NAME=hsds.test                   # set to the name of the bucket you will be using
+    export AWS_REGION=us-east-1                    # for boto compatibility - for S3 set to the region the bucket is in
+    export AWS_S3_GATEWAY=http://s3.amazonaws.com  # Use AWS endpoint for region where bucket is
+    export HSDS_ENDPOINT=http://hsds.hdf.test    # use https protocal if SSL is desired
+    # For S3, set AWS_S3_GATEWAY to endpoint for the region the bucket is in.  E.g.: http://s3.amazonaws.com.
+    # See http://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region for list of endpoints.
+
 
 Test Data Setup
 ---------------

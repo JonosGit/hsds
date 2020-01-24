@@ -30,6 +30,11 @@ These environment variables will be passed to the Docker containers on start up.
     export BUCKET_NAME=hsds.test                   # set to the name of the container you will be using
     export HSDS_ENDPOINT=http://hsds.hdf.test      # Set to the DNS name of the VM.  Use https protocal if SSL is desired
     export HDF5_SAMPLE_BUCKET=""
+    export AWS_ACCESS_KEY_ID=1234567890            # use the OpenIO AWS_ACCESS_KEY
+    export AWS_SECRET_ACCESS_KEY=ABCDEFGHIJKL      # use the OpenIO AWS_SECRET_ACCESS_KEY
+    export AWS_REGION=us-east-1                    # for boto compatibility - for S3 set to the region the bucket is in
+    export AWS_S3_GATEWAY=http://s3.amazonaws.com  # Use AWS endpoint for region where bucket is
+    export HSDS_ENDPOINT=http://hsds.hdf.test    # use https protocal if SSL is desired
 
 
 Docker Setup
