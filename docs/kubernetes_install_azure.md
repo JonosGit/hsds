@@ -4,15 +4,15 @@ Installation with Azure Kubernetes
 Export environment variables as shown in "Sample .bashrc" below.
 
 1. Install AKS cli`az aks install-cli`
-2. Create AKS Cluster and attach to ACR `az aks create -n $AKSCLUSTER -g $RESOURCEGROUP --generate-ssh-keys --attach-acr $ACRNAME` In order to leverage RBAC with Kubernetes Azure AAD must be configured prior to cluster creation. See example automation at `https://github.com/Azure-Samples/azure-cli-samples/blob/master/aks/azure-ad-integration/azure-ad-integration.sh`
+2. Create AKS Cluster and attach to ACR `az aks create -n $AKSCLUSTER -g $RESOURCEGROUP --generate-ssh-keys --attach-acr $ACRNAME` In order to leverage RBAC with Kubernetes Azure AAD must be configured prior to cluster creation. See example automation at <https://github.com/Azure-Samples/azure-cli-samples/blob/master/aks/azure-ad-integration>
 3. Create a storage account container for HSDS, using AZ cli tools or Azure Storage console
 4. Get project source code: `$ git clone https://github.com/HDFGroup/hsds`
-5. Apply RBAC after creating service priniciple in AAD <https://docs.microsoft.com/en-us/azure/aks/azure-ad-integration-cli>
+5. Apply RBAC after creating required aad components <https://docs.microsoft.com/en-us/azure/aks/azure-ad-integration-cli>
 6. For HSDS to be used only within the cluster apply: `$ kubectl apply -f k8s_service.yml`.  Or for HSDS to be available externally, customize k8s_service_lb.yml with an ssl cert identifier and apply: `$ kubectl apply -f k8s_service_lb.yml`
 7. Go to admin/config directory: `$ cd hsds/admin/config`
 8. Copy the file "passwd.default" to "passwd.txt".  Add any usernames/passwords you wish
 9. From hsds directory, build docker image:  `$ docker build -t hdfgroup/hsds .`
-10. Tag the docker image using the ACR scheme: `$ docker tag $ACRNAME.azurecr.io/hsds:v1`  where 82126fcb0658 is the docker image id, 12345678, is the AWS account id, us-west-2 is replaced by the region you will be installing to, and v1 is the version (update this everytime you will be deploying a new version of HSDS)
+10. Tag the docker image using the ACR scheme: `$ docker tag hdfgroup/hsds $ACRNAME.azurecr.io/hsds:v1`  where $ACRNAME is the ACR being deployed too, and v1 is the version (update this everytime you will be deploying a new version of HSDS)
 11. Obtain the credentials to login to the AWS container registry: `$ az acr login --name $ACRNAME`.
 12. Push the image to Azure ACR: `$ docker push $ACRNAME.azurecr.io/hsds:v1`
 13. In k8s_deployment.yml, customize the values for AWS_S3_GATEWAY, AWS_REGION, BUCKET_NAME, LOG_LEVEL, SERVER_NAME, HSDS_ENDPOINT, GREETING, AZURE_CONNECTION_STRING and ABOUT based on the AWS region you will be deploying to and values desired for your installation. Next update the image: myacr.azurecr.io/hdfgroup/hsds:v1" to reflect the attached acr repository for deployment.
