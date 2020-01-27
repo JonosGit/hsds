@@ -3,17 +3,36 @@ Installation with Azure Kubernetes
 
 Export environment variables as shown in "Sample .bashrc" below.
 
+To deploy an Azure Storage Account, Azure Container Registry and Azure Kubernetes with HSDS Docker image
+
+1. Install az-cli `curl -L https://aka.ms/InstallAzureCli | bash`
+2. Login to Azure Subscription using AZ-Cli. `$ az login`
+3. Run the following commands to create Azure Resource Group:
+        `$ az group create --name $RESOURCEGROUP --location $LOCATION`
+4. Create storage account `az storage account create -n $STORAGEACCTNAME -g $RESOURCEGROUP -l $LOCATION --sku Standard_LRS`
+5. Create a storage container `az storage container create -n MyStorageContainer --fail-on-exist`
+6. The following command will create the new ACR
+        `$ az acr create --resource-group $RESOURCEGROUP --name $ACRNAME --sku Basic --admin-enabled true`
+7. Run az acr import
+    `az acr import -n $ACRNAME --source docker.io/hdfgroup/hsds:latest --image hdfgroup/hsds:v1`
+8. Pull the image down via docker or login to Azure Container Registry via docker and modify as needed (see Local docker image deployment below). `docker login --username $ACRNAME --password $AZDOCKERPASS $ACRNAME.azurecr.io`
+9. Install AKS cli`az aks install-cli`
+10. Create AKS Cluster and attach to ACR `az aks create -n $AKSCLUSTER -g $RESOURCEGROUP --generate-ssh-keys --attach-acr $ACRNAME`
+11. Login to AKS Cluster `az aks get-credentials -g $RESOURCEGROUP -n $AKSNAME`
+
+To deploy to an existing ACR/AKS instace from HDFGroup Git repo local Docker image
+
 1. Install AKS cli`az aks install-cli`
 2. Create AKS Cluster and attach to ACR `az aks create -n $AKSCLUSTER -g $RESOURCEGROUP --generate-ssh-keys --attach-acr $ACRNAME`
 3. Create a storage account container for HSDS, using AZ cli tools or Azure Storage console
 4. Get project source code: `$ git clone https://github.com/HDFGroup/hsds`
-5. Apply RBAC after creating service priniciple in AAD
+5. Create RBAC roles `kubectl create -f k8s_rbac.yml`
 6. For HSDS to be used only within the cluster apply: `$ kubectl apply -f k8s_service.yml`.  Or for HSDS to be available externally, customize k8s_service_lb.yml with an ssl cert identifier and apply: `$ kubectl apply -f k8s_service_lb.yml`
 7. Go to admin/config directory: `$ cd hsds/admin/config`
 8. Copy the file "passwd.default" to "passwd.txt".  Add any usernames/passwords you wish
 9. From hsds directory, build docker image:  `$ docker build -t hdfgroup/hsds .`
-10. Tag the docker image using the ACR scheme: `$ docker tag $ACRNAME.azurecr.io/hsds:v1`  where 82126fcb0658 is the docker image id, 12345678, is the AWS account id, us-west-2 is replaced by the region you will be installing to, and v1 is the version (update this everytime you will be deploying a new version of HSDS)
-11. Obtain the credentials to login to the AWS container registry: `$ az acr login --name $ACRNAME`.
+10. Tag the docker image using the ACR scheme: `$ docker tag hdfgroup/hsds $ACRNAME.azurecr.io/hsds:v1`  where $ACRNAME is the ACR being deployed too, and v1 is the version (update this everytime you will be deploying a new version of HSDS)
+11. Obtain the credentials to login to the container registry: `$ az acr login --name $ACRNAME`.
 12. Push the image to Azure ACR: `$ docker push $ACRNAME.azurecr.io/hsds:v1`
 13. In k8s_deployment.yml, customize the values for AWS_S3_GATEWAY, AWS_REGION, BUCKET_NAME, LOG_LEVEL, SERVER_NAME, HSDS_ENDPOINT, GREETING, AZURE_CONNECTION_STRING and ABOUT based on the AWS region you will be deploying to and values desired for your installation. Next update the image: myacr.azurecr.io/hdfgroup/hsds:v1" to reflect the attached acr repository for deployment.
 14. Apply the deployment: `$ kubectl apply -f k8s_deployment.yml`
@@ -32,6 +51,25 @@ Export environment variables as shown in "Sample .bashrc" below.
 27. The test suite will emit some warnings due to test domains not being loaded.  To address see test_data_setup below.
 28. To scale up or down the number of HSDS pods, run: `$ kubectl scale --replicas=n deployment/hsds` where n is the number of pods desired.
 29. If enabling external access to the service, create a DNS record for the HSDS endpoint to the DNS name of the load balancer
+
+Sample .bashrc
+--------------
+
+These environment variables will be passed to the Docker containers on start up.
+
+    export AZURE_CONNECTION_STRING=1234567890      # use the connection string for your Azure account 
+    export BUCKET_NAME=hsds.test                   # set to the name of the container you will be using
+    export HDF5_SAMPLE_BUCKET=""
+    export AWS_ACCESS_KEY_ID=1234567890            # user your AWS account access key if using S3 (Not needed if running on EC2 and AWS_IAM_ROLE is defined)
+    export AWS_SECRET_ACCESS_KEY=ABCDEFGHIJKL      # use your AWS account access secret key if using S3  (Not needed if running on EC2 and AWS_IAM_ROLE is defined)
+    export AWS_REGION=us-east-1                    # for boto compatibility - for S3 set to the region the bucket is in
+    export AWS_S3_GATEWAY=http://s3.amazonaws.com  # Use AWS endpoint for region where bucket is
+    export HSDS_ENDPOINT=http://hsds.hdf.test    # use https protocal if SSL is desired
+    export RESOURCEGROUP=myresouregroup
+    export AKSCLUSTER=myakscluster
+    export LOCATION=westus
+    export ACRNAME=myacrname
+    export STORAGEACCTNAME=mystorageaccount
 
 
 Test Data Setup
