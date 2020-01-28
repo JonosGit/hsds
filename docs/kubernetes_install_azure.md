@@ -15,12 +15,12 @@ To deploy an Azure Storage Account, Azure Container Registry and Azure Kubernete
         `$ az acr create --resource-group $RESOURCEGROUP --name $ACRNAME --sku Basic --admin-enabled true`
 7. Run az acr import
     `az acr import -n $ACRNAME --source docker.io/hdfgroup/hsds:latest --image hdfgroup/hsds:v1`
-8. Pull the image down via docker or login to Azure Container Registry via docker and modify as needed (see Local docker image deployment below). `docker login --username $ACRNAME --password $AZDOCKERPASS $ACRNAME.azurecr.io`
+8. Pull the image down via docker (see existing ACR/AKS directions) or login to Azure Container Registry and use the `az acr build` command to modify as needed.
 9. Install AKS cli`az aks install-cli`
 10. Create AKS Cluster and attach to ACR `az aks create -n $AKSCLUSTER -g $RESOURCEGROUP --generate-ssh-keys --attach-acr $ACRNAME`
 11. Login to AKS Cluster `az aks get-credentials -g $RESOURCEGROUP -n $AKSNAME`
 
-To deploy to an existing ACR/AKS instace from HDFGroup Git repo local Docker image
+To deploy an image to an existing ACR/AKS instace from HDFGroup Git repo local Docker image
 
 1. Install AKS cli`az aks install-cli`
 2. Login to AKS Cluster `az aks get-credentials -g $RESOURCEGROUP -n $AKSNAME`
@@ -33,11 +33,11 @@ To deploy to an existing ACR/AKS instace from HDFGroup Git repo local Docker ima
 9. Tag the docker image using the ACR scheme: `$ docker tag hdfgroup/hsds $ACRNAME.azurecr.io/hsds:v1`  where $ACRNAME is the ACR being deployed too, and v1 is the version (update this everytime you will be deploying a new version of HSDS)
 10. Obtain the credentials to login to the container registry: `$ az acr login --name $ACRNAME`.
 11. Push the image to Azure ACR: `$ docker push $ACRNAME.azurecr.io/hsds:v1`
-12. In k8s_deployment.yml, customize the values for AWS_S3_GATEWAY, AWS_REGION, BUCKET_NAME, LOG_LEVEL, SERVER_NAME, HSDS_ENDPOINT, GREETING, AZURE_CONNECTION_STRING and ABOUT based on the AWS region you will be deploying to and values desired for your installation. Next update the image: myacr.azurecr.io/hdfgroup/hsds:v1" to reflect the attached acr repository for deployment.
+12. In k8s_deployment.yml, customize the values for HDF5_SAMPLE_BUCKET, AZURE_CONNECTION_STRING and BUCKET_NAME based on the Azure region you will be deploying to and values desired for your installation. Next update the image: 'myacr.azurecr.io/hdfgroup/hsds:v1' to reflect the attached acr repository for deployment.
 13. Apply the deployment: `$ kubectl apply -f k8s_deployment.yml`
 14. Verify that the HSDS pod is running: `$ kubectl get pods`.  A pod with a name starting with hsds should be displayed with status as "Running".
 15. Tail the pod logs (`$ kubectl logs -f hsds-1234 sn`) till you see the line: `All nodes healthy, changing cluster state to READY` (requires log level be set to INFO or lower)
-16. Create a forwarding port to the Kubernetes service: `$ sudo kubectl port-forward hsds-1234 80:5101`
+16. Create a forwarding port to the Kubernetes service (if no loadbalancer is in use): `$ sudo kubectl port-forward hsds-1234 80:5101`
 17. Add the DNS for the service to the /etc/hosts file.  E.g. `127.0.0.1  hsds.hdf.test` (use the DNS name given in k8s_deployment.yml)
 18. Go to <http://hsds.hdf.test/about> and verify that "cluster_state" is "READY"
 19. Install Anaconda: <https://conda.io/docs/user-guide/install/linux.html>  (install for python 3.7)
