@@ -10,7 +10,7 @@ To deploy an Azure Storage Account, Azure Container Registry and Azure Kubernete
 3. Run the following commands to create Azure Resource Group:
         `$ az group create --name $RESOURCEGROUP --location $LOCATION`
 4. Create storage account `az storage account create -n $STORAGEACCTNAME -g $RESOURCEGROUP -l $LOCATION --sku Standard_LRS`
-5. Create a storage container `az storage container create -n MyStorageContainer --fail-on-exist`
+5. Create a storage container `az storage container create -n $CONTAINERNAME --fail-on-exist`
 6. The following command will create the new ACR
         `$ az acr create --resource-group $RESOURCEGROUP --name $ACRNAME --sku Basic --admin-enabled true`
 7. Run az acr import
@@ -64,6 +64,7 @@ These environment variables will be passed to the Docker containers on start up.
     export LOCATION=westus
     export ACRNAME=myacrname
     export STORAGEACCTNAME=mystorageaccount
+    export CONTAINERNAME=testcontainer
 
 
 Test Data Setup
