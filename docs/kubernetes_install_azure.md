@@ -26,7 +26,7 @@ To deploy an image to an existing ACR/AKS instace from HDFGroup Git repo local D
 2. Login to AKS Cluster `az aks get-credentials -g $RESOURCEGROUP -n $AKSNAME`
 3. Get project source code: `$ git clone https://github.com/HDFGroup/hsds`
 4. Create RBAC roles `kubectl create -f k8s_rbac.yml`
-5. For HSDS to be used only within the cluster apply: `$ kubectl apply -f k8s_service.yml`.  Or for HSDS to be available externally, customize k8s_service_lb.yml with an ssl cert identifier and apply: `$ kubectl apply -f k8s_service_lb.yml` ** By default both port 80 and 443 will be configured. Modify as needed. For additional configuration options to handle SSL related scenerios see Azure Front Door.
+5. For HSDS to be used only within the cluster apply: `$ kubectl apply -f k8s_service.yml`.  Or for HSDS to be available externally, customize k8s_service_lb.yml with an ssl cert identifier and apply: `$ kubectl apply -f k8s_service_lb.yml` By default both port 80 and 443 will be configured. Modify as needed. For additional configuration options to handle SSL related scenerios see Azure Front Door <https://docs.microsoft.com/en-us/azure/frontdoor/>.
 6. Go to admin/config directory: `$ cd hsds/admin/config`
 7. Copy the file "passwd.default" to "passwd.txt".  Add any usernames/passwords you wish
 8. From hsds directory, build docker image:  `$ docker build -t hdfgroup/hsds .`
