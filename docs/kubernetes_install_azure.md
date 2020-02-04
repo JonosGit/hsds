@@ -17,10 +17,9 @@ These environment variables will be passed to the Docker containers on start up.
     export STORAGEACCTNAME=mystorageaccount
     export CONTAINERNAME=testcontainer
 
-
 To deploy an Azure Storage Account, Azure Container Registry and Azure Kubernetes
 
-1. Install az-cli `curl -L https://aka.ms/InstallAzureCli | bash`
+1. Install or update az-cli `curl -L https://aka.ms/InstallAzureCli | bash`
 2. Validate runtime version az-cli is greater then 2.0.80 `az version`
 3. Login to Azure Subscription using AZ-Cli. `$ az login`
 4. Run the following commands to create Azure Resource Group:
@@ -37,7 +36,7 @@ To deploy an HSDS docker image to Azure ACR and AKS Cluster
 1. Login to AKS Cluster `az aks get-credentials -g $RESOURCEGROUP -n $AKSNAME`
 2. Get project source code: `$ git clone https://github.com/HDFGroup/hsds`
 3. Create RBAC roles `kubectl create -f k8s_rbac.yml`
-4. For HSDS to be used only within the cluster apply: `$ kubectl apply -f k8s_service_azure.yml`.  Or for HSDS to be available externally, customize k8s_service_lb_azure.yml and apply: `$ kubectl apply -f k8s_service_lb_azure.yml` By default port 80 will be configured. Modify as needed. For additional configuration options to handle SSL related scenerios see Azure Front Door <https://docs.microsoft.com/en-us/azure/frontdoor/>.
+4. Create the Load Balancer endpoint: `$ kubectl apply -f k8s_service_lb_azure.yml` By default port 80 will be configured. To configure SSL Offloading via Azure Front Door see the document at (/docs/frontdoor_install_azure.md) or example located at (/admin/azure/create_fd.sh)
 5. Go to admin/config directory: `$ cd hsds/admin/config`
 6. Copy the file "passwd.default" to "passwd.txt".  Add any usernames/passwords you wish
 7. From hsds directory, build docker image:  `$bash build.sh`

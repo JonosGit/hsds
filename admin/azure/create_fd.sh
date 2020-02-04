@@ -1,5 +1,4 @@
 #!/bin/bash
-
 # creates an Azure Front Door with SSL Offloading configured
 FRONTDOORNAME=''
 RESOURCEGROUP=''
@@ -9,7 +8,6 @@ LOCATION=''
 PROTOCOL='http'
 ACCEPTED_PROTOCOLS='Https'
 FWDING_PROTOCOLS='HttpsOnly'
-
 
 
 az group create --name $RESOURCEGROUP --location $LOCATION
