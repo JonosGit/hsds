@@ -6,7 +6,7 @@ Export environment variables as shown in "Sample .bashrc" below.
 Sample .bashrc
 --------------
 
-These environment variables will be passed to the Docker containers on start up.
+These environment variables will be use to configure Front Door
 
     export RESOURCEGROUP=myresouregroup
     export LOCATION=westus
