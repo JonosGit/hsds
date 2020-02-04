@@ -23,7 +23,7 @@ To deploy an Azure Storage Account, Azure Container Registry and Azure Kubernete
 1. Install az-cli `curl -L https://aka.ms/InstallAzureCli | bash`
 2. Validate runtime version az-cli is greater then 2.0.80 `az version`
 3. Login to Azure Subscription using AZ-Cli. `$ az login`
-4. Run the following commands to create Azure Resource Group (see /admin/azure/create_acr.sh for example):
+4. Run the following commands to create Azure Resource Group:
         `$ az group create --name $RESOURCEGROUP --location $LOCATION`
 5. Create storage account and container (see /admin/azure/create_storage.sh for example): `az storage account create -n $STORAGEACCTNAME -g $RESOURCEGROUP -l $LOCATION --sku Standard_LRS`
 6. The following command will create the new ACR (see /admin/azure/create_acr.sh for example):
