@@ -3,6 +3,21 @@ Installation with Azure Kubernetes
 
 Export environment variables as shown in "Sample .bashrc" below.
 
+Sample .bashrc
+--------------
+
+These environment variables will be passed to the Docker containers on start up.
+
+    export AZURE_CONNECTION_STRING=1234567890      # use the connection string for your Azure account 
+    export BUCKET_NAME=test                  # set to the name of the container you will be using
+    export RESOURCEGROUP=myresouregroup
+    export AKSCLUSTER=myakscluster
+    export LOCATION=westus
+    export ACRNAME=myacrname
+    export STORAGEACCTNAME=mystorageaccount
+    export CONTAINERNAME=testcontainer
+
+
 To deploy an Azure Storage Account, Azure Container Registry and Azure Kubernetes
 
 1. Install az-cli `curl -L https://aka.ms/InstallAzureCli | bash`
@@ -41,21 +56,6 @@ Additional commands
 
 1. To scale up or down the number of HSDS pods, run: `$ kubectl scale --replicas=n deployment/hsds` where n is the number of pods desired.
 
-Sample .bashrc
---------------
-
-These environment variables will be passed to the Docker containers on start up.
-
-    export AZURE_CONNECTION_STRING=1234567890      # use the connection string for your Azure account 
-    export BUCKET_NAME=test                  # set to the name of the container you will be using
-    export RESOURCEGROUP=myresouregroup
-    export AKSCLUSTER=myakscluster
-    export LOCATION=westus
-    export ACRNAME=myacrname
-    export STORAGEACCTNAME=mystorageaccount
-    export CONTAINERNAME=testcontainer
-
-
 Test Data Setup
 ---------------
 
@@ -66,5 +66,5 @@ Using the following procedure to import test files into hsds
 3. Install h5pyd (Python client SDK): `$ pip install h5pyd`
 4. Run: `$ hsconfigure`.  Set hs endpoint with DNS name (e.g. <http://hsds.hdf.test>) and admin username/password.  Ignore API Key.
 5. Run: `$ hsinfo`.  Server state should be "`READY`".  Ignore the "Not Found" error for the admin home folder
-6. Create test user environment and test data (see /admin/azure/hstouch.sh for example)
+6. Create test user environment and test data (see /admin/azure/config_hstouch.sh for example)
 7. Run the integration test: `$ python testall.py --skip_unit`
