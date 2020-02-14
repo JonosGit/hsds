@@ -1,0 +1,60 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+
+
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.7'
+    addToPath: true
+    architecture: 'x64'
+
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: |
+      sudo apt-get update -qq
+      pip install aiohttp
+      pip install awscli
+      pip install requests
+      pip install pyflakes
+      pip install pytz
+      
+      
+      git clone https://github.com/HDFGroup/hsds
+      cd hsds
+      git checkout azure
+      echo "admin:admin" > ./admin/config/passwd.txt
+      echo "test_user1:test" >> ./admin/config/passwd.txt
+      bash ./build.sh
+      docker tag hdfgroup/hsds:latest $ACRNAME.azurecr.io/hdfgroup/hsds:$TAGVERSION
+      az acr login --name $ACRNAME --username $ACRNAME --password $ACRPASS
+      docker push $ACRNAME.azurecr.io/hdfgroup/hsds:$TAGVERSION
+
+- task: KubernetesManifest@0
+  inputs:
+    action: 'deploy'
+    kubernetesServiceConnection: 'kube'
+    manifests: 'hsds/k8s_rbac.yml'
+
+- task: KubernetesManifest@0
+  inputs:
+    action: 'deploy'
+    kubernetesServiceConnection: 'kube'
+    manifests: 'hsds/k8s_service_lb.yml'
+
+- task: KubernetesManifest@0
+  inputs:
+    action: 'deploy'
+    kubernetesServiceConnection: 'kube'
+    manifests: 'hsds/k8s_deployment.yml'
+
