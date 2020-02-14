@@ -30,9 +30,7 @@ steps:
       pip install pytz
       
       
-      git clone https://github.com/HDFGroup/hsds
-      cd hsds
-      git checkout azure
+
       echo "admin:admin" > ./admin/config/passwd.txt
       echo "test_user1:test" >> ./admin/config/passwd.txt
       bash ./build.sh
