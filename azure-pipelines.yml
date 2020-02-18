@@ -28,7 +28,12 @@ steps:
       pip install requests
       pip install pyflakes
       pip install pytz
+<<<<<<< HEAD
 
+=======
+      
+      
+>>>>>>> 366e1041ebe3e0effaf00a970e082a3c015a413d
 
       echo "admin:admin" > ./admin/config/passwd.txt
       echo "test_user1:test" >> ./admin/config/passwd.txt

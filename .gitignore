@@ -5,3 +5,10 @@
 *.log
 *.vscode
 passwd.txt
+.eggs/pkgconfig-1.5.1-py3.7.egg/pkgconfig-1.5.1.dist-info/WHEEL
+.eggs/pkgconfig-1.5.1-py3.7.egg/pkgconfig-1.5.1.dist-info/RECORD
+.eggs/pkgconfig-1.5.1-py3.7.egg/pkgconfig-1.5.1.dist-info/METADATA
+.eggs/pkgconfig-1.5.1-py3.7.egg/pkgconfig-1.5.1.dist-info/LICENSE
+.eggs/pkgconfig-1.5.1-py3.7.egg/pkgconfig/pkgconfig.py
+.eggs/pkgconfig-1.5.1-py3.7.egg/pkgconfig/__init__.py
+.eggs/README.txt
